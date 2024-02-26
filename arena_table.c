@@ -89,7 +89,7 @@ void insert_entry(Table *t, table entry)
         return;
     }
 
-    if (strcmp(e.key.as.String, entry.key.as.String) == 0)
+    if (e.key.as.String && strcmp(e.key.as.String, entry.key.as.String) == 0)
     {
         tmp[entry.key.hash] = new_entry(entry);
         return;
@@ -133,7 +133,7 @@ void delete_entry(Table *t, arena key)
     size_t index = key.hash;
     table e = a[index];
 
-    if (key.type == ARENA_NULL)
+    if (e.key.type == ARENA_NULL)
         return;
 
     if (e.next && (strcmp(e.key.as.String, key.as.String) == 0))
@@ -166,7 +166,7 @@ void delete_entry(Table *t, arena key)
     for (; tmp->next; tmp = tmp->next)
         switch (tmp->key.type)
         {
-        case ARENA_STR:
+        case ARENA_VAR:
             if (strcmp(tmp->key.as.String, key.as.String) == 0)
                 goto DEL;
             break;
@@ -186,7 +186,7 @@ void delete_entry(Table *t, arena key)
 
     switch (tmp->key.type)
     {
-    case ARENA_STR:
+    case ARENA_VAR:
         if (strcmp(tmp->key.as.String, key.as.String) == 0)
             goto DEL_LAST;
         break;
