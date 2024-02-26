@@ -1,15 +1,16 @@
 .PHONY	:= all
 CC		:= clang
+CFLAGS	:= -O2
 SRC		:= $(wildcard ./*.c)
 OBJ		:= $(SRC:%.c=%.o)
-CFLAGS	:= -Wall -Wextra -g
 
 
-arena:	$(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS)
+./lib/libarena.dylib:	$(OBJ)
+	mkdir lib
+	$(CC) -o $@ $^ $(CFLAGS) -dynamiclib
 
-%.o:	%.c
-	$(CC) -c -g $< $(CFLAGS)
+%.o:	%.c %.h
+	$(CC) -c $< $(CFLAGS)
 
 clean:
-	rm -rf *.dSYM *.o arena
+	rm -rf *.o ./lib/

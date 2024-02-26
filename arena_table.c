@@ -1,15 +1,4 @@
 #include "arena_table.h"
-#include <stdio.h>
-#include <stdarg.h>
-
-static void log_err(const char *format, ...)
-{
-    va_list args;
-    va_start(args, format);
-    vfprintf(stderr, format, args);
-    va_end(args);
-    fputs("\n", stderr);
-}
 
 Table arena_alloc_table(size_t size)
 {
@@ -223,7 +212,7 @@ arena find_entry(Table *t, arena *hash)
     size_t index = hash->hash;
     table entry = a[index];
 
-    if (entry.key.type == ARENA_NULL)
+    if (entry.key.type == ARENA_NULL || hash->type == ARENA_NULL)
         return Null();
 
     if (strcmp(entry.key.as.String, hash->as.String) == 0)
