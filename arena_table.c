@@ -212,7 +212,7 @@ arena find_entry(Table *t, arena *hash)
     size_t index = hash->hash;
     table entry = a[index];
 
-    if (entry.key.type == ARENA_NULL || hash->type == ARENA_NULL)
+    if (entry.key.type == ARENA_NULL || hash->type != ARENA_VAR)
         return Null();
 
     if (strcmp(entry.key.as.String, hash->as.String) == 0)
@@ -288,7 +288,7 @@ arena Var(const char *str, size_t table_size)
 {
     size_t size = strlen(str);
     arena ar = arena_alloc(size, ARENA_VAR);
-    strcpy(ar.as.String, str);
+    memcpy(ar.as.String, str, size);
     ar.as.String[size] = '\0';
     size_t h = hash(ar, table_size);
     ar.hash = h;

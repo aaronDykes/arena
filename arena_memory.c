@@ -172,17 +172,17 @@ arena arena_realloc(Arena ar, size_t size)
     case ARENA_BYTE_PTR:
         if (!ar->as.Bytes)
             return arena_init(ptr, size, type);
-        memcpy(ptr, ar->as.Bytes, size);
+        memcpy(ptr, ar->as.Bytes, ar->size);
         break;
     case ARENA_STR:
         if (!ar->as.String)
             return arena_init(ptr, size, type);
-        strcpy(ptr, ar->as.String);
+        memcpy(ptr, ar->as.String, ar->size);
         break;
     case ARENA_INT_PTR:
         if (!ar->as.Ints)
             return arena_init(ptr, size, type);
-        memcpy(ptr, ar->as.Ints, size);
+        memcpy(ptr, ar->as.Ints, ar->size);
         break;
     }
     arena_free(ar);
